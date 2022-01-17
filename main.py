@@ -29,8 +29,6 @@ def connect(initfile='database.ini'):
     return db_con
 
 
-sqlGetTableList = "SELECT table_schema,table_name FROM information_schema.tables where table_schema='test' ORDER BY table_schema,table_name ;"
-
 
 if __name__ == '__main__':
     q1 = 'select comodity, price from market natural join comodity_price where market_id=1871;'
