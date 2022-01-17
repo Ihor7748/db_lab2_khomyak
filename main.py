@@ -33,24 +33,30 @@ sqlGetTableList = "SELECT table_schema,table_name FROM information_schema.tables
 
 
 if __name__ == '__main__':
-    q1 = ''
-    q2 = ''
-    with open('./create.sql', 'r') as fd:
-        q1 = fd.read()
-    with open('./populate.sql', 'r') as fd:
-        q2 = fd.read()
+    q1 = 'select comodity, price from market natural join comodity_price where market_id=1871;'
+    q2 = 'select country_name, count(country_name) from location natural join market group by country_name;'
+    q3 = "select year, price from market natural join comodity_price natural join location where country_name='Ukraine' and comodity='Potatoes - Retail'"
     with connect() as db_con:
         cur = db_con.cursor()
         cur.execute(q1) 
-        cur.execute(q2)
-        cur.execute('SELECT * FROM location')
         res = cur.fetchall()
+        print('ціни на продукти на ринку львова')
         for row in res:
-            print('city_id: ', row[0])
-            print('city_name: ', row[1])
-            print('locality: ', row[2])
-            print('country: ', row[3])
-            print('\n')
-        db_con.commit()
+            print('commodity: ', row[0])
+            print('price: ', row[1])
+        cur.execute(q2)
+        res = cur.fetchall()
+        print('кількість ринків країни в нашій базі данних:')
+        for row in res:
+            print('country_name: ', row[0])
+            print('count: ', row[1])
+        cur.execute(q3)
+        res = cur.fetchall()
+        print('ціни на картоплю в україні з роками')
+        for row in res:
+            print('year: ', row[0])
+            print('count: ', row[1])
+
+        
 
 
